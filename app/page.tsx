@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import Image from "next/image";
 import { ChevronLeft, ChevronRight, Phone, Pause, Play } from "lucide-react";
 import PdfFullHeight from "@/components/PdfFullHeight";
@@ -168,13 +168,25 @@ export default function Page() {
           >
 
           <div className="absolute inset-0 bg-linear-to-b from-black/40 via-black/20 to-black/80" />
-          <div className="absolute top-18 sm:top-6 left-6 flex flex-col gap-1">
-            <div className="px-5 py-2 rounded-full bg-white/15 backdrop-blur-md shadow-xl">
+          <div className="absolute top-6 left-6 flex justify-center items-start gap-3">
+            <div className="w-12 h-12 rounded-full overflow-hidden bg-white/20 backdrop-blur-md shadow-lg flex items-center justify-center ring-1 ring-white/30">
+              <Image
+                src="/logo.jpg"
+                width={400}
+                height={400}
+                alt="BKTK Logo"
+                className="w-full h-full object-cover"
+              />
+            </div>
+
+            <div className="px-3 py-2 rounded-full bg-white/15 backdrop-blur-md shadow-xl">
               <span className="text-white text-sm font-semibold tracking-wide">
                 Promo Spéciale • Produits Népalais
               </span>
             </div>
+
           </div>
+
 
           {discount && (
             <div className="absolute top-30 sm:top-20 right-10 flex flex-col gap-1">
@@ -185,9 +197,9 @@ export default function Page() {
           )}
 
 
-          <div className="absolute top-6 right-6 flex items-center gap-3">
+          <div className="absolute top-18 sm:top-6 right-6 flex items-center gap-3">
             <div className="bg-red-600/20 backdrop-blur px-4 py-1.5 rounded-full text-white text-sm font-semibold shadow-lg">
-              ⏳ {countdown}
+              ⏳ Promo Ends in {countdown}
             </div>
             <button
               onClick={() => setPlaying((p) => !p)}
