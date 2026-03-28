@@ -11,7 +11,7 @@ const PROMOS = [
   {
     name: "Wai Wai veg/chicken & RARA (30 pcs)",
     price: 10,
-    old: 26,
+    old: 14,
     image: "/products/waiwai.jpg",
   },
   {
@@ -222,7 +222,7 @@ export default function Page() {
             </button>
           </div>
 
-          <div className="absolute bottom-14 left-6 text-white drop-shadow-xl">
+          <div className="absolute bottom-24 left-6 text-white drop-shadow-xl">
             <h1 className="text-4xl font-bold mb-2">{current.name}</h1>
             <div className="flex items-center gap-3">
               {current.old && (
@@ -238,13 +238,18 @@ export default function Page() {
 
           <a
             href="tel:+33141506271"
-            className="absolute bottom-14 right-6 bg-red-600 hover:bg-red-700 text-white px-6 py-3 rounded-full text-sm font-semibold shadow-xl flex items-center gap-2"
+            className="absolute  bottom-24 sm:bottom-8 right-6 bg-red-600 hover:bg-red-700 text-white px-6 py-3 rounded-full text-sm font-semibold shadow-xl flex items-center gap-2"
           >
             <Phone size={18} />
             +33 1 41 50 62 71
           </a>
-          <p className="absolute bottom-3 left-4 text-white/80">21 Avenur Bleriot</p>
-          <p className="absolute bottom-8 left-4 text-white/80">21 Avenur Bleriot</p>
+          <div className="absolute bottom-4 left-4 text-right text-white text-xs leading-tight bg-black/40 px-3 py-2 rounded-md backdrop-blur-sm">
+            <p className="font-semibold">Adresse: BKTK INTERNATIONAL</p>
+            <p>2 Rue Jean Moulin, 93350 Le Bourget Local: A5</p>
+            <p>1 Avenue Louis Blériot, 93120 La Courneuve Local: A22</p>
+            <p></p>
+          </div>
+
         </motion.div>
 
         <div className="absolute bottom-1/2 left-0 right-0 flex justify-between px-6">
