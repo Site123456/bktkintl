@@ -127,8 +127,11 @@ export default function Page() {
     return () => cancelAnimationFrame(frame);
   }, [playing, index]);
 
-  const next = () => setIndex((i) => (i + 1) % PROMOS.length);
-  const prev = () => setIndex((i) => (i - 1 + PROMOS.length) % PROMOS.length);
+  const videos = ["/promovideo.mp4", "/promo1.mp4", "/promo2.mp4"];
+  const [currentIndex, setCurrentIndex] = useState(0);
+
+  const next = () => setCurrentIndex((i) => (i + 1) % videos.length);
+  const prev = () => setCurrentIndex((i) => (i - 1 + videos.length) % videos.length);
 
   const discount = current.old
     ? Math.round(((current.old - current.price) / current.old) * 100)
@@ -136,141 +139,113 @@ export default function Page() {
 
   const radius = 14;
   const circumference = 2 * Math.PI * radius;
-  const offset = circumference * (1 - progress);
 
   return (
     <main className="w-full min-h-screen bg-black text-white">
-      <section className="relative h-screen md:h-[60vh] w-full overflow-hidden">
-        <motion.div
-          initial={{ scale: 1 }}
-          animate={{ scale: 1.12 }}
-          transition={{ duration: 12, ease: "linear" }}
-          className="absolute inset-0 overflow-hidden"
+      <section className="relative h-screen md:h-[70vh] w-full overflow-hidden">
+
+        {/* VIDEO CAROUSEL */}
+        <div className="absolute inset-0">
+          <motion.div
+            key={currentIndex}
+            initial={{ opacity: 0, scale: 1.05 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.8, ease: "easeOut" }}
+            className="absolute inset-0"
+          >
+            <video
+              src={videos[currentIndex]}
+              muted
+              autoPlay
+              loop
+              playsInline
+              className="h-full w-full object-cover"
+            />
+
+            {/* VIGNETTE */}
+            <div className="absolute inset-0 bg-[radial-gradient(circle,rgba(0,0,0,0)_40%,rgba(0,0,0,0.55)_100%)]" />
+            <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/20 to-black/80" />
+          </motion.div>
+        </div>
+
+        {/* TOP LEFT BADGE */}
+        <div className="absolute top-6 left-6 flex items-center gap-3 z-20">
+          <div className="w-12 h-12 rounded-full overflow-hidden bg-white/20 backdrop-blur-md shadow-lg ring-1 ring-white/30">
+            <Image
+              src="/logo.jpg"
+              width={400}
+              height={400}
+              alt="BKTK Logo"
+              className="w-full h-full object-cover"
+            />
+          </div>
+
+          <div className="px-3 py-2 rounded-full bg-white/15 backdrop-blur-md shadow-xl">
+            <span className="text-white text-sm font-semibold tracking-wide">
+              Promo Spéciale • Produits Népalais
+            </span>
+          </div>
+        </div>
+
+        {/* DISCOUNT BADGE */}
+        {discount && (
+          <div className="absolute top-24 right-6 z-20">
+            <div className="bg-red-600 text-white px-6 py-2 rounded-full text-3xl font-bold shadow-xl">
+              -{discount}%
+            </div>
+          </div>
+        )}
+
+        {/* COUNTDOWN + PLAY/PAUSE */}
+        <div className="absolute top-6 right-6 flex items-center gap-3 z-20">
+          <div className="bg-red-600/20 backdrop-blur px-4 py-1.5 rounded-full text-white text-sm font-semibold shadow-lg">
+            ⏳ Promo Ends in {countdown}
+          </div>
+
+          <button
+            onClick={() => setPlaying((p) => !p)}
+            className="relative h-10 w-10 rounded-full bg-white/15 flex items-center justify-center text-white shadow-lg"
+          >
+            {playing ? <Pause size={16} /> : <Play size={16} />}
+          </button>
+        </div>
+
+        {/* PRODUCT INFO */}
+        <div className="absolute bottom-28 left-6 text-white drop-shadow-xl z-20">
+          <h1 className="text-4xl font-bold mb-2">{current.name}</h1>
+          <div className="flex items-center gap-3">
+            {current.old && (
+              <span className="line-through opacity-70 text-xl">{current.old}€</span>
+            )}
+            <span className="text-red-400 text-5xl font-bold">{current.price}€</span>
+          </div>
+        </div>
+
+        {/* CALL BUTTON */}
+        <a
+          href="tel:+33141506271"
+          className="absolute bottom-28 right-6 bg-red-600 hover:bg-red-700 text-white px-6 py-3 rounded-full text-sm font-semibold shadow-xl flex items-center gap-2 z-20"
         >
-          <video
-            src="/promovideo.mp4"
-            muted
-            autoPlay
-            loop
-            playsInline
-            className="absolute inset-0 h-full w-full object-cover"
-          />
+          <Phone size={18} />
+          +33 1 41 50 62 71
+        </a>
 
-          {/* Dark outer vignette */}
-          <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle,rgba(0,0,0,0)_40%,rgba(0,0,0,0.55)_100%)]" />
-        </motion.div>
+        {/* ADDRESS */}
+        <div className="absolute bottom-4 left-4 text-white text-xs bg-black/40 px-3 py-2 rounded-md backdrop-blur-sm z-20">
+          <p className="font-semibold">Adresse: BKTK INTERNATIONAL</p>
+          <p>2 Rue Jean Moulin, 93350 Le Bourget Local: A5</p>
+          <p>1 Avenue Louis Blériot, 93120 La Courneuve Local: A22</p>
+        </div>
 
-        <motion.div
-          initial={{ opacity: 0, scale: 1.05 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.6, ease: "easeOut" }}
-          className="absolute inset-0"
-          >
-
-          <div className="absolute inset-0 bg-linear-to-b from-black/40 via-black/20 to-black/80" />
-          <div className="absolute top-6 left-6 flex justify-center items-start gap-3">
-            <div className="w-12 h-12 rounded-full overflow-hidden bg-white/20 backdrop-blur-md shadow-lg flex items-center justify-center ring-1 ring-white/30">
-              <Image
-                src="/logo.jpg"
-                width={400}
-                height={400}
-                alt="BKTK Logo"
-                className="w-full h-full object-cover"
-              />
-            </div>
-
-            <div className="px-3 py-2 rounded-full bg-white/15 backdrop-blur-md shadow-xl">
-              <span className="text-white text-sm font-semibold tracking-wide">
-                Promo Spéciale • Produits Népalais
-              </span>
-            </div>
-
-          </div>
-
-
-          {discount && (
-            <div className="absolute top-30 sm:top-20 right-10 flex flex-col gap-1">
-              <div className="bg-red-600 text-white px-5 py-2 rounded-full text-2xl font-bold shadow-xl min-w-30">
-                -{discount}%
-              </div>
-            </div>
-          )}
-
-
-          <div className="absolute top-18 sm:top-6 right-6 flex items-center gap-3">
-            <div className="bg-red-600/20 backdrop-blur px-4 py-1.5 rounded-full text-white text-sm font-semibold shadow-lg">
-              ⏳ Promo Ends in {countdown}
-            </div>
-            <button
-              onClick={() => setPlaying((p) => !p)}
-              className="relative h-10 w-10 rounded-full bg-white/15 flex items-center justify-center text-white shadow-lg"
-            >
-              <svg
-                className="absolute inset-0"
-                viewBox="0 0 32 32"
-                aria-hidden="true"
-              >
-                <circle
-                  cx="16"
-                  cy="16"
-                  r={radius}
-                  stroke="rgba(255,255,255,0.25)"
-                  strokeWidth="2.5"
-                  fill="none"
-                />
-                <circle
-                  cx="16"
-                  cy="16"
-                  r={radius}
-                  stroke="#f97373"
-                  strokeWidth="2.5"
-                  fill="none"
-                  strokeDasharray={circumference}
-                  strokeDashoffset={offset}
-                  strokeLinecap="round"
-                />
-              </svg>
-              {playing ? <Pause size={16} /> : <Play size={16} />}
-            </button>
-          </div>
-
-          <div className="absolute bottom-24 left-6 text-white drop-shadow-xl">
-            <h1 className="text-4xl font-bold mb-2">{current.name}</h1>
-            <div className="flex items-center gap-3">
-              {current.old && (
-                <span className="line-through opacity-70 text-xl">
-                  {current.old}€
-                </span>
-              )}
-              <span className="text-red-400 text-5xl font-bold">
-                {current.price}€
-              </span>
-            </div>
-          </div>
-
-          <a
-            href="tel:+33141506271"
-            className="absolute  bottom-24 sm:bottom-8 right-6 bg-red-600 hover:bg-red-700 text-white px-6 py-3 rounded-full text-sm font-semibold shadow-xl flex items-center gap-2"
-          >
-            <Phone size={18} />
-            +33 1 41 50 62 71
-          </a>
-          <div className="absolute bottom-4 left-4 text-right text-white text-xs leading-tight bg-black/40 px-3 py-2 rounded-md backdrop-blur-sm">
-            <p className="font-semibold">Adresse: BKTK INTERNATIONAL</p>
-            <p>2 Rue Jean Moulin, 93350 Le Bourget Local: A5</p>
-            <p>1 Avenue Louis Blériot, 93120 La Courneuve Local: A22</p>
-            <p></p>
-          </div>
-
-        </motion.div>
-
-        <div className="absolute bottom-1/2 left-0 right-0 flex justify-between px-6">
+        {/* CAROUSEL CONTROLS */}
+        <div className="absolute inset-y-0 left-0 right-0 flex justify-between items-center px-6 z-30">
           <button
             onClick={prev}
             className="h-12 w-12 flex items-center justify-center bg-white/20 backdrop-blur rounded-full text-white hover:bg-white/30 shadow-lg"
           >
             <ChevronLeft size={24} />
           </button>
+
           <button
             onClick={next}
             className="h-12 w-12 flex items-center justify-center bg-white/20 backdrop-blur rounded-full text-white hover:bg-white/30 shadow-lg"
