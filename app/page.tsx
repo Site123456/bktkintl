@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 import Image from "next/image";
 import { ChevronLeft, ChevronRight, Phone, Pause, Play } from "lucide-react";
 import PdfFullHeight from "@/components/PdfFullHeight";
-const PROMO_END = new Date("2026-03-31T23:59:59");
+const PROMO_END = new Date("2026-04-04T23:59:59");
 const SLIDE_DURATION = 4000;
 const PROMOS = [
   {
